@@ -1,7 +1,7 @@
 import React from "react";
 import { Typography } from "@material-ui/core";
 
-export default function Label() {
+export default function Label({label}) {
   return (
         <Typography style={{
             fontFamily: '"helvetica neue", Helvetica, Arial, sans-serif',
@@ -10,7 +10,7 @@ export default function Label() {
             padding: '0 3px',
             textAlign: 'left'
         }}>
-            Label
+            {label || 'Label'}
         </Typography>
     );
 }

@@ -16,19 +16,19 @@ const ItemRenderer = ({ greedy, direction, items, setItems, generateSchema, dele
             case 'ResponsiveLayout':
                 return {item, component: <Layout items={items} setItems={setItems} deleteSelf={deleteSelf} generateSchema={generateSchema} direction="row" />};
             case 'TextField':
-                return {item, component: <TextField label="text" variant="outlined" style={{width: '100%'}} />};
+                return {item, component: <TextField label="text" variant="outlined" style={{width: '90%'}} />};
             case 'PhoneNumberInput':
                 return {item, component: <div />};
             case 'Password':
-                return {item, component: <TextField label="password" type="password" variant="outlined" style={{width: '100%'}} />};
+                return {item, component: <TextField label="password" type="password" variant="outlined" style={{width: '90%'}} />};
             case 'RadioGroup':
                 return {item, component: <MaterialRadioGroup />};
             case 'OutlinedInput':
-                return {item, component: <TextField />};
+                return {item, component: <TextField style={{ width: '90%' }} />};
             case 'FileUpload':
                 return {item, component: <TextField />};
             case 'Dropdown':
-                return {item, component: <Dropdown style={{width: '100%'}} />};
+                return {item, component: <Dropdown style={{width: '90%'}} />};
             case 'DateInput':
                 return {item, component: <TextField />};
             case 'CountrySelector':
@@ -42,7 +42,7 @@ const ItemRenderer = ({ greedy, direction, items, setItems, generateSchema, dele
             case 'Slider':
                 return {item, component: <Slider />};
             case 'Label':
-                return {item, component: <Label />};
+                return {item, component: <Label label={item.label} />};
             default: 
                 return {item: {name: "", weight: 6, type: 'box'}, component: <Fragment />};
         }
