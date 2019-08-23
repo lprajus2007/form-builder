@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, Fragment } from 'react'
 import Layout from './Layout'
 import Box from './Box'
 import { DndProvider } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
+import ReactJson from 'react-json-view'
 
-import { Paper, Grid, GridList } from '@material-ui/core'
+import { Paper, Grid, GridList, Button, Modal, Backdrop, Fade } from '@material-ui/core'
 
 const tileData = [
   // {
@@ -33,11 +34,34 @@ const tileData = [
   }
 ];
 
+const styles = {
+  modal: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  modalContent: {
+    background: 'white',
+    minHeight: '5em',
+    display: 'flex',
+    alignItems: 'center'
+  },
+  button: {
+    marginTop: '20px'
+  },
+  schemaStyle: {
+    maxHeight: '40vh',
+    overflow: 'scroll'
+  }
+}
+
 export default function DndPlayground() {
   const [items, setItems] = useState([])
-  const deleteLayout = (index) => {
-    items.splice(index, 1);
-    setItems(items);
+  const [savedSchema, setSavedSchema] = useState()
+  const [showModal, setShowModal] = useState(false)
+
+  const deleteLayout = () => {
+    setItems([]);
   }
 
   const generateNodeKeys = (node) => {
@@ -80,25 +104,58 @@ export default function DndPlayground() {
     }
   }
 
+  const saveSchema = () => {
+    if (items.length) {
+      const schema = generateSchema(items);
+      setSavedSchema(schema);
+    }
+    else {
+      setShowModal(true);
+    }
+  }
+
   const downloadSchema = () => {
-    const schema = generateSchema(items);
-    console.log(schema);
-    if (items.length) download('uiSchema.json', schema);
+    download('uiSchema.json', savedSchema);
   }
 
   return (
-    <div className="App">
+    <div>
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={showModal}
+        style={styles.modal}
+        onClose={() => setShowModal(false)}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={showModal}>
+          <div style={styles.modalContent}>Form is empty!</div>
+        </Fade>
+      </Modal>
       <DndProvider backend={HTML5Backend}>
-        <Grid container justify="center" spacing={4} style={{minHeight: '8em'}}>
+        <Grid container justify="center" spacing={4} style={{minHeight: '16em'}}>
           <Grid key={0} item xs={6} >
-            <Layout keyy='layout-base' isInitial items={items} setItems={setItems} deleteLayout={deleteLayout} generateSchema={downloadSchema} selfIndex={-1} />
+            <Layout keyy='layout-base' isInitial items={items} setItems={setItems} deleteSelf={deleteLayout} generateSchema={saveSchema} selfIndex={-1} />
           </Grid>
           <Grid key={1} item xs={6}>
-            <Paper style={{margin: '4em', padding: '1em'}}>
-              <GridList cellHeight={160}>
-                {tileData.map((tile, i) => (<Box name={tile.title} key={`box-${i}`} />))}
-              </GridList>
-            </Paper>
+            <Grid container direction="column">
+              <Grid item>
+                <Paper style={{margin: '4em 1em', padding: '1em', minHeight: '8em', background: 'lightgrey'}}>
+                  <GridList cellHeight={160}>
+                    {tileData.map((tile, i) => (<Box name={tile.title} key={`box-${i}`} />))}
+                  </GridList>
+                </Paper>
+              </Grid>
+              <Grid item>
+                {savedSchema && <Fragment><div style={styles.schemaStyle} >
+                  <ReactJson theme="ocean" displayDataTypes={false} displayObjectSize={false} src={savedSchema} style={{padding: '10px'}} />
+                </div><Button onClick={downloadSchema} style={styles.button}>Download</Button></Fragment>}
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
       </DndProvider>

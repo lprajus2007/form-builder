@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
-import { Button, TextField, FormLabel } from '@material-ui/core';
+import { Button, TextField } from '@material-ui/core';
 
 const style = {
   display: 'inline-block',
@@ -45,16 +45,28 @@ const Box = ({ name }) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [values, setValues] = useState({
-    label: ""
+    label: "",
+    helperText: ""
   });
   const [item, setItem] = useState({
     name,
     label: "",
+    helperText: "",
     weight: 4,
     type: 'box' 
   });
 
   const handleDoubleClick = () => {
+    setItem({
+      name,
+      label: "",
+      helperText: "",
+      weight: 4,
+      type: 'box' 
+    });
+    setValues({
+      label: ""
+    })
     setOpen(true);
   }
 
@@ -73,9 +85,8 @@ const Box = ({ name }) => {
 
   const getContent = (name) => (
     <form>
-      {name === 'Label' && 
       <Fragment>
-        <FormLabel>Label</FormLabel><TextField
+        <TextField
           id="label"
           label="Enter Label"
           className={classes.textField}
@@ -83,7 +94,15 @@ const Box = ({ name }) => {
           onChange={handleChange('label')}
           margin="normal"
         />
-      </Fragment>}
+        {item.name === 'Dropdown' && <TextField
+          id="helperText"
+          label="Enter Helper Text"
+          className={classes.textField}
+          value={values.helperText}
+          onChange={handleChange('helperText')}
+          margin="normal"
+        />}
+      </Fragment>
     </form>
   )
 

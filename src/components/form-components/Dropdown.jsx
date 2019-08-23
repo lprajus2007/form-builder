@@ -35,9 +35,9 @@ class TextFields extends React.Component {
       <TextField
         id="standard-select-dummy"
         select
-        label="Select"
+        label={this.props.label || "Select"}
         value={this.state.dummy}
-        helperText="dummy text dummy text dummy text"
+        helperText={this.props.helperText || "Helper text to help the user pick an option"}
         margin="normal"
         style={{width: '100%'}}
       >

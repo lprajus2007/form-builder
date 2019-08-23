@@ -32,15 +32,14 @@ const Layout = ({ greedy, direction, items, setItems, generateSchema, deleteSelf
     direction={direction || 'column'}
     spacing={2}
     ref={drop} 
-    style={{minHeight: '3em'}}
-    xs={12}>
+    style={{minHeight: '6em'}}>
     <ItemRenderer items={items} setItems={setItems} deleteSelf={deleteSelf} generateSchema={generateSchema} direction={direction} />
     <Grid container style={{ marginTop: '1em' }} justify="flex-end">
-      <Grid item style={{textAlign: 'right'}} xs={1}>
-        <IconButton onClick={deleteSelf} style={{color: 'red'}}><i class="material-icons">clear</i></IconButton>
+      <Grid item style={{textAlign: 'right'}}>
+        <IconButton onClick={deleteSelf} style={{color: 'red'}}><i className="material-icons">clear</i></IconButton>
       </Grid>
-      <Grid item style={{textAlign: 'right'}} xs={1}>
-        <IconButton onClick={generateSchema} style={{color: 'green'}}><i class="material-icons">done</i></IconButton>
+      <Grid item style={{textAlign: 'right'}}>
+        <IconButton onClick={generateSchema} style={{color: 'green'}}><i className="material-icons">done</i></IconButton>
       </Grid>
     </Grid>
   </Grid>;
